@@ -30,13 +30,13 @@ $(document).ready(function(){
                 first = false;
             }
             div.css({"top":larghezza*i,"left":larghezza*j});
-            div.prop("id","#btn-" + i  + "-" + j);
+            div.prop("id","btn-" + i  + "-" + j);
         }
     }
     }
 
     function assegnaValori(){
-        let numeri = [];
+        let numeri = new Array(16);
         for(let i=0;i<15;i++)
         {
             numeri[i]=(i+1);
@@ -61,21 +61,21 @@ $(document).ready(function(){
         let i= parseInt(aus[1]);
         let j= parseInt(aus[2]);
 
-        if(j>0 && $(`btn-${i}-${j-1}`).text()=="")
+        if(j>0 && $(`#btn-${i}-${j-1}`).text()=="")
         {
-            scambio($(this), $(`btn-${i}-${j-1}`));
+            scambio($(this), $(`#btn-${i}-${j-1}`));
         }
-        else if(i>0 && $(`btn-${i-1}-${j}`).text()=="")
+        else if(i>0 && $(`#btn-${i-1}-${j}`).text()=="")
         {
-            scambio($(this), $(`btn-${i-1}-${j}`));
+            scambio($(this), $(`#btn-${i-1}-${j}`));
         }
-        else if(i<3 && $(`btn-${i+1}-${j}`).text()=="")
+        else if(i<3 && $(`#btn-${i+1}-${j}`).text()=="")
         {
-            scambio($(this), $(`btn-${i+1}-${j}`));
+            scambio($(this), $(`#btn-${i+1}-${j}`));
         }
-        else if(j<3 && $(`btn-${i}-${j+1}`).text()=="")
+        else if(j<3 && $(`#btn-${i}-${j+1}`).text()=="")
         {
-            scambio($(this), $(`btn-${i}-${j+1}`));
+            scambio($(this), $(`#btn-${i}-${j+1}`));
         }
     }
 
@@ -85,13 +85,13 @@ $(document).ready(function(){
             "top":cella2.css("top"),
             "left":cella2.css("left"),
 
-        }, 1000);
+        }, 500);
 
         cella2.animate({
             "top":cella1.css("top"),
             "left":cella1.css("left"),
 
-        }, 1000, function(){
+        }, 500, function(){
             let ids = cella1.prop("id");
             cella1.prop("id",cella2.prop("id"));
             cella2.prop("id",ids);
