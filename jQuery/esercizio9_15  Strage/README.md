@@ -1,5 +1,5 @@
 15. > **LEZIONE 15**
-     15. > *Consegna jQuery - Strage*
+     15. > *Consegna jQuery - Ese 15 Strage*
      
 E' stata realizzata tramite jQuery la seguente applicazione per l’esecuzione di una verifica on line a risposte chiuse:
 - All’avvio l’intestazione “Test di Cultura Generale” esegue una animazione che, in un tempo di 1,5 sec, moltiplica x 15 le dimensioni ed il font-size dell’elemento medesimo.
