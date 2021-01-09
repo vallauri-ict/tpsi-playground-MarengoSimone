@@ -1,4 +1,4 @@
-# VERIFICA 2020
+﻿# VERIFICA 2020
 
 Realizzare tramite **jQuery** la seguente applicazione per la vendita on line di fotocamere
 
@@ -55,3 +55,4 @@ Realizzare tramite **jQuery** la seguente applicazione per la vendita on line di
  - In corrispondenza del click sul pulsante “ApriCarrello” viene visualizzato il carrello contenente gli acquisti finora effettuati e viene modificata la scritta del pulsante in “ChiudiCarrello”. Il codice della freccina rivolta verso l’alto è ˄. Il carrello viene aperto / chiuso mediante una animazione slideDown / slideUp della durata di 1 secondo.
  - In corrispondenza del **click** sul pulsante **“Aggiungi al Carrello”**, l’articolo corrispondente viene aggiunto all’interno del carrello (indipendentemente dal fatto che il carrello sia visualizzato oppure nascosto). Se l’articolo era già presente nel carrello viene semplicemente incrementata la quantità, altrimenti viene creata una nuova riga 
  -  Su ogni riga del carrello aggiungere l’immagine del cestino che, al click, consenta di eliminare l’intera riga corrispondente
+
