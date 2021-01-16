@@ -89,7 +89,7 @@ $(document).ready(function () {
 
 		// controllo se l'elemento è già esistente
 		let trovato = false;
-		table.children("tr").each(function(i,ref){
+		table.find("tr").each(function(i,ref){
 			let name = $(ref).children("td").eq(0).html();
 			if(name == nome)
 			{
@@ -97,7 +97,6 @@ $(document).ready(function () {
 				qta++;
 				$(ref).children("td").eq(2).html(qta);
 				trovato = true;
-				
 			}
 		})
 		if(trovato==false)
