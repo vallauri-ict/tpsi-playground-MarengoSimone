@@ -21,11 +21,9 @@ $(document).ready(function(){
 	}
 	
 	
-	$("<a>").prop({"download":"ombrelloni.json", "href":"#"}).text("salva json su disco")
-	.appendTo(wrapper).on("click", function(){
+
 		let json = {"utenti":utenti, "ombrelloni":ombrelloni}
-		json = JSON.stringify(json, null, 3)
+		json = JSON.stringify(json, null, 3);
 		let blob = new Blob([json], {type : 'application/json'});
-		$(this).prop("href", URL.createObjectURL(blob));
-	})
+		$("a").prop("href", URL.createObjectURL(blob));
 })

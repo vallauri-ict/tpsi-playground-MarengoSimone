@@ -14,18 +14,26 @@ $(document).ready(function(){
 	let _dataInizio = $("#wrapper").find("input").eq(0)
 	let _dataFine = $("#wrapper").find("input").eq(1)
 	let _msg = $("#wrapper").children("label").eq(2)
+	let ombrelloni;
 
 	_mappa.hide();
 	_btnVisualizzaMappa.prop({"disabled":true});
 	_dataFine.prop({"disabled":true});
+	let dataStart;
+	let dataEnd;
 
 	_dataInizio.on("change",function(){
 		_dataFine.prop({"min":_dataInizio.val(),"disabled":false});
+		dataStart = new Date(_dataInizio.val()); // da stringa a object
+		_btnVisualizzaMappa.prop("disabled",true);
+		_btnVisualizzaMappa.removeClass("buttonEnabled");
 	})
 
 	_dataFine.on("change",function(){
 		_btnVisualizzaMappa.prop("disabled",false);
 		_btnVisualizzaMappa.addClass("buttonEnabled");
+		dataEnd = new Date(_dataFine.val());
+		_msg.text("Giorni richiesti: " + (((dataEnd - dataStart)/MMG)+1));
 	})
 
 	_btnVisualizzaMappa.on("click",function(){
@@ -35,6 +43,8 @@ $(document).ready(function(){
 			"error":errore,
 			"success":function(data){
 				console.log(data);
+				ombrelloni = data;
+				let id = 1;
 				for(let i=0;i<=RIGHE;i++)
 				{
 					if(i!=9)
@@ -45,13 +55,40 @@ $(document).ready(function(){
 							let div = $("<div>");
 							div.addClass("ombrellone");
 							div.appendTo(_mappa);
-							div.css({"top":X_OFFSET+(16*i),"left":Y_OFFSET+(16*j)})
-						}	
+							div.css({"top":Y_OFFSET+(16*i),"left":X_OFFSET+(16*j)+(i*-2)})
+							if(isDisponibile(ombrelloni[id-1]))
+							{
+								div.on("click",ombrelloneClick);
+							}	
+							else
+							{
+								div.addClass("red");
+							}
+							id++;
+						}
 					}
 				}
 			}
 		})
 	})
+
+	function isDisponibile(ombrellone)
+	{
+		let pos1 = (dataStart-new Date(_dataInizio.prop("min")))/MMG;
+		//let pos2 = (dataEnd-new Date(_dataInizio.prop("min")))/MMG; formato iso/date : "yyyy-mm-ss"
+		let pos2 = (dataEnd-new Date(_dataInizio.prop("min")))/MMG;
+		console.log(pos1,pos2);
+		for (let i = pos1; i <= pos2; i++) {
+			if(ombrellone.stato[i] != 0)
+				return false;
+		}
+		return true;
+	}
+
+	function ombrelloneClick()
+	{
+		$(this).addClass("blue");
+	}
 		
  
 })
