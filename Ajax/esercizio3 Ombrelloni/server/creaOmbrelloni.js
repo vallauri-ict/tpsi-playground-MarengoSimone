@@ -24,6 +24,9 @@ $(document).ready(function(){
 
 		let json = {"utenti":utenti, "ombrelloni":ombrelloni}
 		json = JSON.stringify(json, null, 3);
+		// trasforma il json in un nuovo oggetto blob
 		let blob = new Blob([json], {type : 'application/json'});
+		// un blob è un file temporaneo in memoria centrale
+		// il metodo URL.createObjectURL restituisce l'indirizzo del file temporaneo
 		$("a").prop("href", URL.createObjectURL(blob));
 })

@@ -36,40 +36,41 @@ $(document).ready(function(){
 		_msg.text("Giorni richiesti: " + (((dataEnd - dataStart)/MMG)+1));
 	})
 
+	let url = "http://localhost:3000/ombrelloni";
 	_btnVisualizzaMappa.on("click",function(){
 		_mappa.show();
-		$.ajax({
-			"url":"http://localhost:3000/ombrelloni",
-			"error":errore,
-			"success":function(data){
-				console.log(data);
-				ombrelloni = data;
-				let id = 1;
-				for(let i=0;i<=RIGHE;i++)
+		let request = inviaRichiesta("get",url);
+		request.fail(errore);
+		request.done(function(data){
+			console.log(data);
+			ombrelloni = data;
+			let id = 1;
+			for(let i=0;i<=RIGHE;i++)
+			{
+				if(i!=9)
+				for(let j=0;j<=COLONNE;j++)
 				{
-					if(i!=9)
-					for(let j=0;j<=COLONNE;j++)
+					if(j!=22)
 					{
-						if(j!=22)
+						let ombrellone = $("<div>");
+						ombrellone.addClass("ombrellone");
+						ombrellone.appendTo(_mappa);
+						ombrellone.css({"top":Y_OFFSET+(16*i),"left":X_OFFSET+(16*j)+(i*-2)})
+						if(isDisponibile(ombrelloni[id-1]))
 						{
-							let div = $("<div>");
-							div.addClass("ombrellone");
-							div.appendTo(_mappa);
-							div.css({"top":Y_OFFSET+(16*i),"left":X_OFFSET+(16*j)+(i*-2)})
-							if(isDisponibile(ombrelloni[id-1]))
-							{
-								div.on("click",ombrelloneClick);
-							}	
-							else
-							{
-								div.addClass("red");
-							}
-							id++;
+							ombrellone.on("click",ombrelloneClick);
+						}	
+						else
+						{
+							ombrellone.addClass("red");
 						}
+						ombrellone.prop("id","id-" + id);
+						id++;
 					}
 				}
 			}
-		})
+			creaPulsantePrenota();
+	})
 	})
 
 	function isDisponibile(ombrellone)
@@ -85,12 +86,46 @@ $(document).ready(function(){
 		return true;
 	}
 
+	let vet = [];
 	function ombrelloneClick()
 	{
-		$(this).addClass("blue");
+		if(!$(this).hasClass("blue"))
+		{
+			$(this).addClass("blue");
+			vet.push($(this).prop("id").split("-")[1]);
+		}
+		else
+		{
+			$(this).removeClass("blue");
+			let pos = vet.indexOf($(this).prop("id").split("-")[1]);
+			vet.splice(pos,1);
+		}
+		console.log(vet);
 	}
-		
- 
+
+	function creaPulsantePrenota()
+	{
+		let a = $("<a>");
+		a.addClass("button buttonEnabled prenota");
+		a.appendTo(_mappa);
+		a.text("prenota");
+		a.on("click",function(){
+			let pos1 = (dataStart-new Date(_dataInizio.prop("min")))/MMG;
+			let pos2 = (dataEnd-new Date(_dataInizio.prop("min")))/MMG;
+			for (const id of vet) {
+				for (let i = pos1; i <= pos2; i++) {
+					ombrelloni[id-1]["stato"][i] = 1;
+				}
+				let request = inviaRichiesta("Patch", url + "/" + id,ombrelloni[id-1]);
+				request.fail(errore);
+				request.done(function(data){
+					console.log(data);
+				})
+			}
+			alert("Prenotazione eseguita correttamente");
+			window.location.reload(); // refresh della pagina
+		})
+	}
 })
 
 function errore(jqXHR, textStatus, str_error){
