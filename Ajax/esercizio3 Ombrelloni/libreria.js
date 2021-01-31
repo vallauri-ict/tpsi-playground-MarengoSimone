@@ -14,7 +14,6 @@ function inviaRichiesta(method, url, parameters={}) {
 		"type": method,   
 		"contentType": contentType, 
         "dataType": "json",   // default      
-        "timeout": 5000,      // default 
     });	
 }
 

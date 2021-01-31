@@ -4,6 +4,7 @@ const Y_OFFSET = 210;
 const MMG = 24*3600*1000 // msec in un giorno
 const RIGHE = 18;
 const COLONNE = 37;
+const URL = "http://localhost:3000";
 
 $(document).ready(function(){	
 	
@@ -15,6 +16,33 @@ $(document).ready(function(){
 	let _dataFine = $("#wrapper").find("input").eq(1)
 	let _msg = $("#wrapper").children("label").eq(2)
 	let ombrelloni;
+
+	// gestione login
+	let _login = $("#login");
+	let _btnSubmit = $("#login .submit");
+
+	_wrapper.hide();
+	_btnSubmit.on("click",function(){
+		let user = $("#login input").eq(0).val();
+		let pw = $("#login input").eq(1).val(); 
+		let url = URL + "/utenti?nome=" + user + "&password=" + pw;
+		let request = inviaRichiesta("get",url);
+		request.fail(errore);
+		request.done(function(data){
+			console.log(data);
+			let p = $("p");
+			if(data.length == 0)
+			{
+				p.css("color","red");
+				p.text("Dati errati!");
+			}
+			else
+			{
+				_wrapper.show();
+				_login.hide();
+			}
+		})
+	});
 
 	_mappa.hide();
 	_btnVisualizzaMappa.prop({"disabled":true});
@@ -36,8 +64,8 @@ $(document).ready(function(){
 		_msg.text("Giorni richiesti: " + (((dataEnd - dataStart)/MMG)+1));
 	})
 
-	let url = "http://localhost:3000/ombrelloni";
 	_btnVisualizzaMappa.on("click",function(){
+		let url = URL + "/ombrelloni";
 		_mappa.show();
 		let request = inviaRichiesta("get",url);
 		request.fail(errore);
@@ -70,7 +98,7 @@ $(document).ready(function(){
 				}
 			}
 			creaPulsantePrenota();
-	})
+		})
 	})
 
 	function isDisponibile(ombrellone)
@@ -98,13 +126,14 @@ $(document).ready(function(){
 		{
 			$(this).removeClass("blue");
 			let pos = vet.indexOf($(this).prop("id").split("-")[1]);
-			vet.splice(pos,1);
+			vet.splice(pos,1); // rimuovo dal vettore
 		}
 		console.log(vet);
 	}
 
 	function creaPulsantePrenota()
 	{
+		let url = URL + "/ombrelloni";
 		let a = $("<a>");
 		a.addClass("button buttonEnabled prenota");
 		a.appendTo(_mappa);
@@ -121,11 +150,19 @@ $(document).ready(function(){
 				request.done(function(data){
 					console.log(data);
 				})
+				sleep();
 			}
 			alert("Prenotazione eseguita correttamente");
 			window.location.reload(); // refresh della pagina
 		})
 	}
+
+	function sleep()
+	{
+		let now = new Date().getTime();
+		while(new Date().getTime() < now + (300)){}
+	}
+
 })
 
 function errore(jqXHR, textStatus, str_error){

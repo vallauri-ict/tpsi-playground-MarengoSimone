@@ -1,11 +1,5 @@
 *{	padding:0;	margin:0; }
 
-h1{
-	text-align:center;
-	margin:40px;
-	color:white;
-}
-
 /* *********************************************************** **
  
  Il file ha dimensione 256 (h) x 240 (v)
@@ -13,11 +7,6 @@ h1{
    In horizontal ci sono 16 icone per cui ciascuna ha larghez 16px
 
 ** *********************************************************** */
-
-body{
-	background-color:#555
-}
-
 #login{
 	width:350px;
 	padding:30px;
