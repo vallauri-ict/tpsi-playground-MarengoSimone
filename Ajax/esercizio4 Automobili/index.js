@@ -69,6 +69,8 @@ $(document).ready(function () {
                 option.appendTo(_lstModelli);
                 option.val(modello.id);
                 option.text(modello.nome + " - " + modello.alimentazione);
+                // salvo dentro ogni opzione le informazioni relative al modello
+                option.prop("modello",modello);
             }
             _lstModelli.prop("selectedIndex",-1);
         });
@@ -76,9 +78,11 @@ $(document).ready(function () {
 
     _lstModelli.on("change",function(){
         _table.empty();
-        let opzioneSelezionata = _lstModelli.children("option").eq(_lstModelli.prop("selectedIndex")).text();
-        _lstModelli.prop("nome",opzioneSelezionata.split(" - ")[0]);
-        _lstModelli.prop("alimentazione",opzioneSelezionata.split(" - ")[1])
+        let opzioneSelezionata = _lstModelli.children("option").eq(_lstModelli.prop("selectedIndex"));
+        //_lstModelli.prop("nome",opzioneSelezionata.split(" - ")[0]);
+        //_lstModelli.prop("alimentazione",opzioneSelezionata.split(" - ")[1])
+        // salvo dentro il listbox le informazioni relative al modello selezionato
+        _lstModelli.prop("modello",opzioneSelezionata.prop("modello"));
 
         let codModello = _lstModelli.val();
         let request = inviaRichiesta("get", URL + "/automobili?codModello=" + codModello);
@@ -107,11 +111,11 @@ $(document).ready(function () {
                 // creazione celle
                 let td = $("<td>");
                 td.appendTo(tr);
-                td.text(_lstModelli.prop("nome"));
+                td.text(_lstModelli.prop("modello").nome);
 
                 td = $("<td>");
                 td.appendTo(tr);
-                td.text(_lstModelli.prop("alimentazione"));
+                td.text(_lstModelli.prop("modello").alimentazione);
 
                 td = $("<td>");
                 td.appendTo(tr);
@@ -131,17 +135,60 @@ $(document).ready(function () {
                 td = $("<td>");
                 td.appendTo(tr);
                 let btn = $("<button>");
+                btn.addClass("btn btn-xs btn-success");
                 btn.appendTo(td);
                 btn.text("dettagli");
+                btn.prop("automobile",auto) // PASSO L'INTERO JSON DELL'AUTOMOBILE
+                btn.on("click",dettagliClick);
 
                 td = $("<td>");
                 td.appendTo(tr);
                 btn = $("<button>");
+                btn.addClass("btn btn-xs btn-secondary");
                 btn.appendTo(td);
                 btn.text("elimina");
+                btn.prop("id",auto.id);
+                btn.on("click",eliminaClick);
             }
         })
     })
+
+    let salva = $("#btnSalva");
+    salva.on("click",function(){
+        let url = URL + "/automobili/" + $("#txtId").val();
+        let request = inviaRichiesta("patch",url,{"prezzo":parseInt($("#txtPrezzo").val())});
+        request.fail(errore);
+        request.done(function(){
+            alert("Record aggiornato correttamente");
+            _lstModelli.trigger("change");
+        })
+    })
+
+    function dettagliClick()
+    {
+        _dettagli.show();
+        $("#txtId").val($(this).prop("automobile").id);
+        $("#txtNome").val(_lstModelli.prop("modello").nome);
+        $("#txtAlimentazione").val(_lstModelli.prop("modello").alimentazione);
+        $("#txtCilindrata").val(_lstModelli.prop("modello").cilindrata);
+        $("#txtTarga").val($(this).prop("automobile").targa);
+        $("#txtColore").val($(this).prop("automobile").colore);
+        $("#txtAnno").val($(this).prop("automobile").anno);
+        $("#txtKm").val($(this).prop("automobile").km);
+        $("#txtPrezzo").val($(this).prop("automobile").prezzo);
+    }
+
+    function eliminaClick()
+    {
+        let url = URL + "/automobili/" + $(this).prop("id");
+        let request = inviaRichiesta("delete",url);
+        request.fail(errore);
+        request.done(function(){
+            alert("Record eliminato correttamente");
+            // trigger forza l'evento change come se avessi cliccato sul mouse
+            _lstModelli.trigger("change");
+        })
+    }
 
 });
 
