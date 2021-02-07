@@ -109,46 +109,51 @@ $(document).ready(function () {
                 tr.appendTo(tbody);
 
                 // creazione celle
-                let td = $("<td>");
-                td.appendTo(tr);
-                td.text(_lstModelli.prop("modello").nome);
+                let url = URL + "/modelli/" + modelloSelezionato;
+                let request = inviaRichiesta("get",url);
+                request.fail(errore);
+                request.done(function(modello){
+                    let td = $("<td>");
+                    td.appendTo(tr);
+                    td.text(modello.nome);
 
-                td = $("<td>");
-                td.appendTo(tr);
-                td.text(_lstModelli.prop("modello").alimentazione);
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    td.text(modello.alimentazione);
 
-                td = $("<td>");
-                td.appendTo(tr);
-                td.text(auto["colore"]);
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    td.text(auto["colore"]);
 
-                td = $("<td>");
-                td.appendTo(tr);
-                td.text(auto.anno);
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    td.text(auto.anno);
 
-                td = $("<td>");
-                td.appendTo(tr);
-                let img = $("<img>");
-                img.css({"height":"65px"})
-                img.appendTo(td);
-                img.prop({"src":`img/${auto.img}`});
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    let img = $("<img>");
+                    img.css({"height":"65px"})
+                    img.appendTo(td);
+                    img.prop({"src":`img/${auto.img}`});
 
-                td = $("<td>");
-                td.appendTo(tr);
-                let btn = $("<button>");
-                btn.addClass("btn btn-xs btn-success");
-                btn.appendTo(td);
-                btn.text("dettagli");
-                btn.prop("automobile",auto) // PASSO L'INTERO JSON DELL'AUTOMOBILE
-                btn.on("click",dettagliClick);
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    let btn = $("<button>");
+                    btn.addClass("btn btn-xs btn-success");
+                    btn.appendTo(td);
+                    btn.text("dettagli");
+                    btn.prop("automobile",auto) // PASSO L'INTERO JSON DELL'AUTOMOBILE
+                    btn.on("click",dettagliClick);
 
-                td = $("<td>");
-                td.appendTo(tr);
-                btn = $("<button>");
-                btn.addClass("btn btn-xs btn-secondary");
-                btn.appendTo(td);
-                btn.text("elimina");
-                btn.prop("id",auto.id);
-                btn.on("click",eliminaClick);
+                    td = $("<td>");
+                    td.appendTo(tr);
+                    btn = $("<button>");
+                    btn.addClass("btn btn-xs btn-secondary");
+                    btn.appendTo(td);
+                    btn.text("elimina");
+                    btn.prop("id",auto.id);
+                    btn.on("click",eliminaClick);
+                })
             }
         })
     })

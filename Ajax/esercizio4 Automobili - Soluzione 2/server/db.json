@@ -377,16 +377,6 @@
       "km": 15000
     },
     {
-      "id": 27,
-      "codModello": 10,
-      "colore": "celeste",
-      "anno": 2013,
-      "prezzo": 11500,
-      "img": "img27.jpg",
-      "targa": "AN441AY",
-      "km": 20000
-    },
-    {
       "id": 28,
       "codModello": 9,
       "colore": "blu",
