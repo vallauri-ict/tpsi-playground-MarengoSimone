@@ -30,9 +30,10 @@ $(function () {
         }
         let pos = generaNumero(0,artisti.length-1);
         let chk = $("input[type=radio]").eq(pos).prop("checked",true);
+        _wrapperAdd.children("h1").text("Inserisci un nuovo quadro di " +  chk.prop("artista").name);
         let idArtista = chk.prop("artista").id;
-        //genereQuadri = chk.prop("artista").gender;
-        inviaRichiestaQuadri(idArtista,chk.prop("artista").gender);
+        genereQuadri = chk.prop("artista").gender;
+        inviaRichiestaQuadri(idArtista);
     })
 
     function inviaRichiestaQuadri(idArtista)
@@ -51,6 +52,7 @@ $(function () {
         _btnPrev.prop("disabled",true);
         let idArtista = $(this).prop("artista").id;
         genereQuadri =  $(this).prop("artista").gender;
+        _wrapperAdd.children("h1").text("Inserisci un nuovo quadro di " +  $(this).prop("artista").name);
         inviaRichiestaQuadri(idArtista);
     })
 
@@ -106,4 +108,38 @@ $(function () {
             $("<img>").prop("src",quadro.img).appendTo(_img);
        
     }
+    
+    /* *********************************** */
+    let _txtImg = $("#immagine");
+    let _txtTitle = $("#titolo");
+
+    $("#btnSalva").on("click",function(){
+        if(_txtTitle.val() == ""  || _txtImg.prop("files") == "")
+        {
+            alert("Inserire titolo e immagine");
+        }
+        else
+        {
+            let fileName = _txtImg.prop("files")[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(fileName);
+            reader.onloadend = function() {
+                console.log('RESULT', reader.result);
+                let idArtista = $("input[type='radio']:checked").prop("artista").id;
+                let json = {
+                    "artist": idArtista,
+                    "title": _txtTitle.val(),
+                    "img": reader.result,
+                    "nLike": 0
+                }
+                let request = inviaRichiesta("POST",URL + "/quadri",json);
+                request.fail(errore);
+                request.done(function(data){
+                    console.log(data);
+                    alert("Quadro inserito correttamente");
+                    inviaRichiestaQuadri(idArtista);
+                })
+            }
+        }
+    })
 })
