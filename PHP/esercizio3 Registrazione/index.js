@@ -19,7 +19,7 @@ $(document).ready(function(){
         {
             $("#msg").html("");
             let form = $("#form1");
-            form.prop("action","pagina2.html");
+            form.prop("action","pagina2.php");
             form.prop("method","get");
             form.submit();
         }
