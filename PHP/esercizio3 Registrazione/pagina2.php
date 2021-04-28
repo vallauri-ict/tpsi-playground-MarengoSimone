@@ -62,9 +62,26 @@
 
 			// step 3: esecuzione della query
 			$sql = "";
-			$sql = "INSERT INTO studenti(nome, settore, hobbies, residenza, segni, media) VALUES ('$nome','$indirizzo','$hobbies',$citta,'$segni',$scoperta)";
+			$sql = "INSERT INTO studenti(nome, settore, hobbies, residenza, segni, media) VALUES ('$nome','$indirizzo','$hobbies',$citta,'$segni','$scoperta')";
 			$ris = _eseguiQuery($con,$sql);
 			echo($ris);
+
+			// step 4: visualizzazione dei dati
+			if($ris)
+			{
+				echo("<h1> Dati arrivati correttamente </h1>");
+				echo("<p> Elenco dei dati inseriti: </p>");
+				echo("<p>$nome;</p>");
+				echo("<p>$indirizzo;</p>");
+				echo("<p>$hobbies;</p>");
+				echo("<p>$citta;</p>");
+				echo("<p>$segni;</p>");
+				echo("<p>$scoperta;</p>");
+			}
+			else
+			{
+				echo("Dati sbagliati");
+			}
 		?>
 	</body>
 </html>
