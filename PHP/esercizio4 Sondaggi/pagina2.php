@@ -20,7 +20,7 @@
             else die("Parametro mancante: id");
 
 			// step 2: connessione
-            $con = _connection("4b_sondaggi");
+            $con = _openConnection("4b_sondaggi");
             
 			// step 3: esecuzione query
 			$sql = "SELECT * FROM sondaggi WHERE id=$id";

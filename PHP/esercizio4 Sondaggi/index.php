@@ -25,22 +25,26 @@
 				<?php
 					// step 1: no perchè non passiamo parametri
 					// step 2: connessione
-					$con = _connection("4b_sondaggi");
+					$con = _openConnection("4b_sondaggi");
 					// step 3: esecuzione query
 					$sql = "SELECT id,titolo FROM sondaggi";
 					$rs = _eseguiQuery($con,$sql);
 					// step 4: visualizzazione dati
 					foreach($rs as $item)
 					{
-						$nome = $item["titolo"];
+						$titolo = $item["titolo"];
 						$id = $item["id"];
-						echo("<option value=$id>$nome</option>");
+						echo("<option value=$id>$titolo</option>");
 					}
+
 				?>
 			</select>
 			<input type="submit" value="invia">
 		</form>
-
+		<?php
+			// step 5: chiusura della connessione
+			$con->close();
+		?>
 
 	</body>
 </html>
