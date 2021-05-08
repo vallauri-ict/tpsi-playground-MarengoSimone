@@ -26,10 +26,32 @@
 			$sql = "SELECT * FROM sondaggi WHERE id=$id";
             $rs = _eseguiQuery($con,$sql)[0];
             
+			// controllo sui cookies
+			if(isset($_COOKIE["sondaggio-$id"]) && $_COOKIE["sondaggio-$id"] == true)
+			{
+				die("Non puoi votare una seconda volta il sondaggio $rs[titolo]");
+			}
+
 			// step 4: visualizzazione dati
             echo("<h1> Sondaggio su : $rs[titolo] </h1>");
-            echo("<hr> <img src=img/$rs[img]>");
-            echo("<h3> Rispondi alla seguente domanda: </h3> <hr>");
+            echo("<hr> <img margin='15px;' width='400px' src=img/$rs[img]>");
+            echo("<h3 style='margin:15px;'> Rispondi alla seguente domanda: </h3>");
+			echo("<p style='margin:15px;'> $rs[domanda] </p>");
+		?>
+		<form action="risultati.php" method="get">
+			<div style='margin:15px;'>
+				<input type="radio" name="optRisposta" value="nSi"> Si <br>
+				<input type="radio" name="optRisposta" value="nNo"> No <br>
+				<input type="radio" name="optRisposta" value="nNs"> Non so <br>
+			</div>
+			<?php
+				echo("<input type='hidden' name='id' value='$id'>")		
+			?>
+			<input type='submit' value="Invia">
+		</form>
+		<?php
+			// step 5: chiusura della connessione
+			$con->close();
 		?>
 	</body>
 </html>

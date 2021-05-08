@@ -11,7 +11,7 @@
 	<script type="application/javascript" src="index.js"> </script>
 </head>
 
-	<body>
+	<body style="text-align:center; padding:10px;">
 		<?php
 			require("php-mysqli.php");
 		?>
