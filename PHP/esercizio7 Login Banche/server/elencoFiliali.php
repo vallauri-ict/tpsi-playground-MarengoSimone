@@ -13,10 +13,15 @@
     //step 3
     $sql = "SELECT filiali.nome,filiali.cFiliale FROM conti,filiali WHERE conti.cFiliale = filiali.cFiliale and conti.cCorrentista = $cCorrentista";
     $rs = _execute($con,$sql);
+    $sql2 = "SELECT Nome FROM correntisti WHERE cCorrentista = $cCorrentista";
+    $rs2 = _execute($con,$sql2);
     // step 4
-    if($rs)
+    if($rs && $rs2)
     {
-        echo(json_encode($rs)); // serializza $rs
+        $ris = array();
+        $ris["Nome"] = $rs2[0]["Nome"];
+        $ris["filiali"] = $rs;
+        echo(json_encode($ris)); // serializza $ris
     }
     else
     {
