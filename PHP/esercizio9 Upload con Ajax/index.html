@@ -1,0 +1,34 @@
+<!doctype  html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8"/> 
+	    <title> upload </title>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"> </script>
+		<script src="libreria.js"></script>		
+		<script src="index.js"></script>
+	</head>
+
+	
+	<body>
+	<h1 align="center">Upload</h1>
+	
+		<label>
+			Nome:
+			<input type="text" id="txtUser" value="pippo">
+		</label><br><br><br>
+
+		
+		
+		<label>
+			Scegli un file:
+			<input type="file" id="txtFiles" multiple> 
+		</label><br><br><br>
+
+		
+		<input type="checkbox" id='chkOverwrite' value="ok">
+            Sovrascrivi file esistenti
+		<input type="button" id="btnInvia" value="upload">	
+		<div id="risultato"></div>
+	</body>
+	
+</html>
